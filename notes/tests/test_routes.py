@@ -14,7 +14,6 @@ class TestRoutes(TestCase):
     def setUpTestData(cls):
         
         cls.author = User.objects.create(username='Author')
-        # cls.anonimous = User.objects.create(username='Anonymous')
         cls.another_user = User.objects.create(username='Another user')
         cls.note = Note.objects.create(
             title='Note title',
@@ -38,7 +37,6 @@ class TestRoutes(TestCase):
 
     def test_availbility_edit_delete_note(self):
         urls = (
-            # ('notes:list', None),
             ('notes:detail', (self.note.slug,)),
             ('notes:edit', (self.note.slug,)),
             ('notes:delete', (self.note.slug,)),
@@ -46,12 +44,9 @@ class TestRoutes(TestCase):
         user_statuses = (
             (self.author, HTTPStatus.OK),
             (self.another_user, HTTPStatus.NOT_FOUND),
-            # (self.anonimous, HTTPStatus.NOT_FOUND),
         )
-
         for user, status in user_statuses:
             self.client.force_login(user)
-
             for name, args in urls:
                 with self.subTest(
                     user=user,
